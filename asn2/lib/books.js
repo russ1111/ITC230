@@ -7,16 +7,6 @@ let books = [
 ];
 
 
-exports.add = (newBook) => {
-    var found = this.get(newBook.title);
-    if (!found) {
-//        newBook.id = leads.length;
-        books.push(newBook);
-    }
-    var action = (found) ? "updated" : "added";
-    return {"action": action, "total": leads.length };
-}
-
 exports.get = (title) => {
     return books.find((item) => {
         return item.title == title;
