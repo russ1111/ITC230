@@ -1,15 +1,16 @@
 {
-  "name": "itc230",
+  "name": "asn3",
   "version": "1.0.0",
-  "description": "itc230 app1",
+  "description": "asn3",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Russ Schneider",
-  "license": "ISC",
+  "author": "Russ",
+  "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2",
-    "express3-handlebars": "^0.5.2"
+    "handlebars": "^4.0.6"
   }
 }

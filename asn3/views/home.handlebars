@@ -1,1 +1,19 @@
-<h1>Welcome to Meadowlark Travel</h1> 
+<html>
+<body>
+    <h1>Welcome to {{{siteName}}}</h1>
+
+    <form action="/search" method="post">
+        Search by title: 
+        <br>
+        <input type="text" name="title">
+        <input type="submit" value="Search">
+        <br>
+    </form>
+    <form action="/remove" method="post">
+        Remove by title: 
+        <br>
+        <input type="text" name="title">
+        <input type="submit" value="Delete">
+    </form>
+</body>
+</html>
