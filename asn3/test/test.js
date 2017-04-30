@@ -24,7 +24,7 @@ describe("Book module", () => {
    var result = book.remove("fake");
 //     expect(result).to.deep.equal(book.remove("fake"));
 //     expect(result).to.be.undefined;
-     expect(result).to.deep.equal("No records found for: fake");
+   expect(result).to.deep.equal("No records found for: fake");
  });
 });
 

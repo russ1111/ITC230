@@ -57,7 +57,7 @@ app.post('/add', function(req,res){
         pubdate: req.body.pubdate
     };
     
-    if(books.get(req.body.title)){
+    if(books.get(newBook.title)){
         res.send("Title is already in the collection: " + req.body.title);
     } else {
 //        res.send(books.add(req.body.title, req.body.author, req.body.pubdate));

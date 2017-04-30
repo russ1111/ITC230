@@ -23,9 +23,9 @@ exports.remove = (title) => {
 }
 
 exports.add = (newBook) => {
+    var len = books.length;
     books.push(newBook);
-    
-    var action = "added";
-    return { "title": newBook.title, "action": action, "author": newBook.author, "pubdate": parseInt(newBook.pubdate)};
+    var action = (books.length == len) ? "" : "added";
+    return { "title": newBook.title, "action": action, "Total books now in collection": books.length };
 }
     

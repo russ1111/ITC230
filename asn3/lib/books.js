@@ -20,6 +20,7 @@ exports.remove = (title) => {
     });
     var action = (books.length == len) ? "" : "deleted";
     return { "title": title, "action": action, "Total books now in collection": books.length };
+   
 }
 
 exports.add = (newBook) => {
