@@ -18,14 +18,17 @@ exports.remove = (title) => {
     books = books.filter((item) => {
         return item.title !== title;
     });
-    var action = (books.length == len) ? "" : "deleted";
-    return { "title": title, "action": action, "Total books now in collection": books.length };
+
+    return { "deleted": (books.length !== len), "total": books.length };
 }
 
 exports.add = (newBook) => {
     var len = books.length;
-    books.push(newBook);
-    var action = (books.length == len) ? "" : "added";
-    return { "title": newBook.title, "action": action, "Total books now in collection": books.length };
+    
+    if(!(this.get(newBook.title))){
+       books.push(newBook); 
+    }
+    
+    return { "added": (books.length !== len), "total": books.length };
 }
     

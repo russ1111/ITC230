@@ -42,11 +42,14 @@ app.post('/search', function(req,res){
 });
 
 app.post('/remove', function(req,res){
-   if(!(books.get(req.body.title))){
+    
+    var result = books.remove(req.body.title);
+    
+   if(!result.deleted){
         res.send("No records found for: " + req.body.title);
     } else {
+        res.send("Deleted: " + req.body.title);
 //        res.send(JSON.stringify(books.remove(req.body.title)));
-        res.send(books.remove(req.body.title));
     }    
 });
 
@@ -56,12 +59,12 @@ app.post('/add', function(req,res){
         author: req.body.author,
         pubdate: req.body.pubdate
     };
-    
-    if(books.get(newBook.title)){
+    var result = books.add(newBook);
+
+    if(!result.added){
         res.send("Title is already in the collection: " + req.body.title);
     } else {
-//        res.send(books.add(req.body.title, req.body.author, req.body.pubdate));
-        res.send(books.add(newBook));
+        res.send("Title added");
     }    
 });
 
@@ -71,8 +74,6 @@ app.get('/headers', function(req,res){
    for(var name in req.headers) s += name + ': ' + req.headers[name] + '\n';    
    res.send(s);  
 });
-
-
 
 
 app.use(function(req,res){
