@@ -26,15 +26,22 @@
         <input type="number" name="pubdate" value="pubdate">
         <input type="submit" value="Add">
     </form>
+    <br>
     <div name="names">
-        Books currently in the collection:
+        Books:
         {{! for loop}}
         <ul>
             {{#each titles}}
                 {{! current context value corresponds to each title }}
-                <li>{{.}}
+                    <form action="/search" method="post">
+                        <input type="text" name="title" value="{{.}}">
+                        <input type="submit" value="Details">
+                        <br>
+                    </form>
             {{/each}}
         </ul>
     </div>
+    <br>
+    <footer><a href="/about">About</a></footer>
 </body>
 </html>

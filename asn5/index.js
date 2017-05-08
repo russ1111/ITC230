@@ -27,7 +27,7 @@ app.get('/all', function(req,res){
 });
 
 app.get('/about', function(req,res){
-    res.render('about');
+    res.render('about', {siteName: "The Book Database"});
 });
 
 app.get('/img/logo.jpg', function(req,res){
@@ -37,23 +37,19 @@ app.get('/img/logo.jpg', function(req,res){
 app.post('/search', function(req,res){
     let result = books.get(req.body.title);
     
-    if(!(books.get(req.body.title))){
-        res.send('Searching for: ' + req.body.title + '<br>' + 
-                 'No records found for: '  + req.body.title);
-    } else {
-        res.render('details', {title: req.body.title, result: result });
-    } 
+    res.render('details', {title: req.body.title, result: result});
+    
 });
 
 app.post('/remove', function(req,res){
-    
     var result = books.remove(req.body.title);
     
    if(!result.deleted){
         res.send("No records found for: " + req.body.title);
     } else {
-        res.send("Deleted: " + req.body.title);
+//        res.send("Deleted: " + req.body.title);
 //        res.send(JSON.stringify(books.remove(req.body.title)));
+        res.render('deleted', {title: req.body.title});
     }    
 });
 
