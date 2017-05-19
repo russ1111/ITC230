@@ -21,7 +21,7 @@ app.set("view engine", ".handlebars");
 
 var Book = require("./models/Book.js");
 
-new Book({title: "Fake123", author: "John Fake", pubdate: 1999}).save(); 
+//new Book({title: "Fake123", author: "John Fake", pubdate: 1999}).save(); 
 
 // return all records
 Book.find({}, function (err, items) {
@@ -48,30 +48,31 @@ app.get('/img/logo.jpg', function(req,res){
     res.render('logo.jpg');
 });
 
-app.post('/search', function(req,res){
+app.post('/search', function(req,res,next){
       let result = req.body.title;    
     
-      Book.findOne({"title": result}, function(err, books){
-      if(err){
-          return next(err);
-      } 
-      if(!books){
-          res.send("No records found for: " + req.body.title);
-//          return next();
-      }
-      
-//      res.type('text/html');
-      res.render('details', {title: books.title, result: books});
-//      console.log(books);
+      Book.findOne({"title": result}, (err, books) => {
+          if(err){
+              return next(err);
+          } 
+          if(!books){
+              res.render('notFound', {title: req.body.title});
+//              return next();
+//              res.send("No records found for: " + result);
+          } else {
+              res.render('details', {title: books.title, result: books});
+          }
+//          res.type('text/html');
+//          console.log(books);
       }); 
 });
 
 app.post('/remove', function(req,res){
 //    var result = books.remove(req.body.title);
     var result = Book.remove({title:req.body.title}, (err, result) => {
-        console.log(result);
+//        console.log(result);
         if(result.result.n == 0){
-            res.send("No records found for: " + req.body.title);
+            res.render('notFound', {title: req.body.title});
         } else {
             res.render('deleted', {title: req.body.title});
         }    
@@ -86,6 +87,7 @@ app.post('/add', function(req,res){
         pubdate: req.body.pubdate
     };
     var result = books.add(newBook);
+//    var result = Book.add(newBook);
 
     if(!result.added){
         res.send("Title is already in the collection: " + req.body.title);
