@@ -13,18 +13,17 @@ app.use(express.static(__dirname + '/public')); // set location for static files
 app.use(require("body-parser").urlencoded({extended: true}));
 
 let handlebars = require("express-handlebars");
-app.engine('.handlebars', handlebars({extname: '.handlebars'}));
+app.engine('.handlebars', handlebars({extname: '.handlebars', defaultLayout: 'main'}));
 app.set("view engine", ".handlebars");
 
-//var mongoose = require('mongoose');
-//mongoose.connect('mongodb://localhost/test');
+//app.use('/api', require('cors')());
 
 var Book = require("./models/Book.js");
 
 //new Book({title: "Fake123", author: "John Fake", pubdate: 1999}).save(); 
 
 // return all records
-Book.find({}, function (err, items) {
+let result = Book.find(function (err, items) {
   if (err) return next(err);
   console.log(items.length);
   // other code here
@@ -33,7 +32,15 @@ Book.find({}, function (err, items) {
 
 // send content of 'home' view
 app.get('/', function(req,res){
-    res.render('home', {siteName: "The Book Database", titles: ["dune", "it", "moby dick", "othello", "hamlet"]});
+//    res.render('home', {siteName: "The Book Database", titles: ["dune", "it", "moby dick", "othello", "hamlet"]});
+    Book.find( function (err, items) {
+      if (err) return next(err);
+          let test = items.title;
+          console.log(test);
+          res.render('home', {siteName: "The Book Database", titles: items});
+          // other code here
+      });
+//    res.render('home', {siteName: "The Book Database", titles: result.title});
 });
 
 app.get('/all', function(req,res){
@@ -57,20 +64,15 @@ app.post('/search', function(req,res,next){
           } 
           if(!books){
               res.render('notFound', {title: req.body.title});
-//              return next();
-//              res.send("No records found for: " + result);
           } else {
               res.render('details', {title: books.title, result: books});
           }
-//          res.type('text/html');
-//          console.log(books);
       }); 
 });
 
 app.post('/remove', function(req,res){
 //    var result = books.remove(req.body.title);
     var result = Book.remove({title:req.body.title}, (err, result) => {
-//        console.log(result);
         if(result.result.n == 0){
             res.render('notFound', {title: req.body.title});
         } else {
