@@ -22,13 +22,10 @@ var Book = require("./models/Book.js");
 
 //new Book({title: "Fake123", author: "John Fake", pubdate: 1999}).save(); 
 
-// return all records
 let result = Book.find(function (err, items) {
   if (err) return next(err);
   console.log(items.length);
-  // other code here
 });
-
 
 // send content of 'home' view
 app.get('/', (req,res) => {
@@ -47,10 +44,6 @@ app.get('/about', function(req,res){
     res.render('about', {siteName: "The Book Database"});
 });
 
-app.get('/img/logo.jpg', function(req,res){
-    res.render('logo.jpg');
-});
-
 app.post('/search', function(req,res,next){
       let result = req.body.title;    
     
@@ -67,7 +60,6 @@ app.post('/search', function(req,res,next){
 });
 
 app.post('/remove', function(req,res){
-//    var result = books.remove(req.body.title);
     var result = Book.remove({title:req.body.title}, (err, result) => {
         if(result.result.n == 0){
             res.render('notFound', {title: req.body.title});
@@ -83,44 +75,10 @@ app.post('/add', function(req,res){
         author: req.body.author,
         pubdate: req.body.pubdate
     };
-//    var result = books.add(newBook);
-//    var result = Book.add(newBook);
     
+    new Book(newBook).save();
     
-//    var result = new Book(newBook).save();
-
-//    if(!result.added){
-//        res.send("Title is already in the collection: " + req.body.title);
-//    } else {
-//        res.send("Title added");
-//    }    
-//    var result = Book.add({newBook}, (err, result) => {
-//        if(result.result.n == 0){
-//            res.render('notFound', {title: req.body.title});
-//        } else {
-//            res.render('deleted', {title: req.body.title});
-//        }    
-//    });
-    
-//    new Book({title: req.body.title, author: req.body.author, pubdate: req.body.pubdate}).save((err) =>{
-//        if (err) {
-//            console.log(err);
-//            res.send("error");
-//        }
-//        else {
-//            console.log("Saved");
-//            res.send("added");
-//        }
-        
-//    if(Book.findOne({title: req.body.title})){
-//        res.send("already have title");
-//    } else {
-    
-    new Book (newBook).save();
-    
-//        new Book({title: req.body.title, author: req.body.author, pubdate: req.body.pubdate}).save();
     res.render('added', {title: req.body.title})
-//    };
 });
 
 app.get('/headers', function(req,res){
@@ -130,17 +88,9 @@ app.get('/headers', function(req,res){
    res.send(s);  
 });
 
-//api
-//app.get('/api/v1/book/:title', (req, res, next) => {
-//    let title = req.params.title;
-//    console.log(title);
-//    Book.findOne({title: title}, (err, result) => {
-//        if (err || !result) return next(err);
-//        res.json( result );    
-//    });
-//});
 
-app.get('/api/books', (req, res) => {
+//API Routes
+app.get('/api/v1/books', (req, res) => {
 	Book.find((err, books) => {
 		if(err){
 			throw err;
@@ -148,6 +98,36 @@ app.get('/api/books', (req, res) => {
 		res.json(books);
 	});
 });
+
+app.get('/api/v1/books/:title', (req, res, next) => {
+    let title = req.params.title;
+//    console.log(title);
+    Book.findOne({title: title}, (err, result) => {
+        if (err || !result) return next(err);
+        res.json(result);    
+    });
+});
+
+app.get('/api/v1/remove/:title', (req, res, next) => {
+    let title = req.params.title;
+    Book.remove({title: title}, (err, result) => {
+        if (err) return next(err);
+        // return # of items deleted
+        res.json({deleted: result.result.n});
+    });
+});
+
+app.get('/api/v1/add/:title/:author/:pubdate', (req, res, next) => {
+    // find & update existing item, or add new 
+    let title = req.params.title;
+    Book.update({title: title}, {title:title, author: req.params.author, pubdate: req.params.pubdate }, {upsert: true }, (err, result) => {
+        if (err) return next(err);
+        // nModified = 0 for new item, = 1+ for updated item 
+        res.json({added: result.n});
+    });
+});
+
+
 
 app.use(function(req,res){
     res.status(404).render('404');
