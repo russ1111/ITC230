@@ -70,15 +70,25 @@ app.post('/remove', function(req,res){
 });
 
 app.post('/add', function(req,res){
-    var newBook = {
+      let result = req.body.title;   
+    
+      var newBook = {
         title: req.body.title,
         author: req.body.author,
         pubdate: req.body.pubdate
-    };
-    
-    new Book(newBook).save();
-    
-    res.render('added', {title: req.body.title})
+      };
+
+      Book.findOne({title: result}, (err, books) => {
+//          if(err){
+//              return next(err);
+//          } 
+          if(!books){
+              new Book(newBook).save();
+              res.render('added', {title: req.body.title});
+          } else {
+              res.render('alreadyInCollection', {title: req.body.title});
+          }
+      }); 
 });
 
 app.get('/headers', function(req,res){

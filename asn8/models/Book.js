@@ -18,5 +18,4 @@ var mySchema = mongoose.Schema({
  pubdate: Number
 }, {collection : "books"}); 
 
-
 module.exports = mongoose.model('Book', mySchema);
