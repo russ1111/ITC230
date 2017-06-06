@@ -1,0 +1,43 @@
+
+<h1>Welcome to {{{siteName}}}</h1>
+
+<form action="/search" method="post">
+    Search by title: 
+    <br>
+    <input type="text" name="title">
+    <input type="submit" value="Search">
+</form>
+<br>
+<form action="/remove" method="post">
+    Remove by title: 
+    <br>
+    <input type="text" name="title">
+    <input type="submit" value="Delete">
+</form>
+<br>
+<form action="/add" method="post">
+    Add by title, author and pubdate:
+    <br>
+    <input type="text" name="title" value="title">
+    <br>
+    <input type="text" name="author" value="author">
+    <br>
+    <input type="number" name="pubdate" value="pubdate">
+    <input type="submit" value="Add">
+</form>
+<br>
+<div id="names">
+    Books:
+    {{! for loop}}
+    <ul>
+        {{#each titles}}
+            {{! current context value corresponds to each title }}
+                <form action="/search" method="post">
+                    <input type="submit" name="title" value="{{title}}">
+                    <br>
+                </form>
+        {{/each}}
+    </ul>
+</div>
+<br>
+<footer><a href="/about">About</a></footer>
