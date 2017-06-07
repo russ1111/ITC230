@@ -129,7 +129,7 @@ app.get('/api/v1/books/:title', (req, res, next) => {
 //    });
 //});
 
-app.get('/api/v1/remove/', (req, res, next) => {
+app.get('/api/v1/remove/:title', (req, res, next) => {
     let title = req.body.title;
     Book.remove({title: title}, (err, result) => {
         if (err) return next(err);
