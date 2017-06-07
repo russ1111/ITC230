@@ -120,8 +120,17 @@ app.get('/api/v1/books/:title', (req, res, next) => {
     });
 });
 
-app.get('/api/v1/remove/:title', (req, res, next) => {
-    let title = req.params.title;
+//app.get('/api/v1/remove/:title', (req, res, next) => {
+//    let title = req.params.title;
+//    Book.remove({title: title}, (err, result) => {
+//        if (err) return next(err);
+//        // return # of items deleted
+//        res.json({deleted: result.result.n});
+//    });
+//});
+
+app.get('/api/v1/remove/', (req, res, next) => {
+    let title = req.body.title;
     Book.remove({title: title}, (err, result) => {
         if (err) return next(err);
         // return # of items deleted
@@ -147,15 +156,6 @@ app.post('/api/v1/add/', (req, res, next) => {
         console.log(req.body);
         // nModified = 0 for new item, = 1+ for updated item 
         res.json({added: result.n});
-    });
-});
-
-app.post('/api/v1/remove/', (req, res, next) => {
-    let title = req.body.title;
-    Book.remove({title: title}, (err, result) => {
-        if (err) return next(err);
-        // return # of items deleted
-        res.json({deleted: result.result.n});
     });
 });
 
