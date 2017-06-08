@@ -111,6 +111,7 @@ app.get('/api/v1/books', (req, res) => {
 	});
 });
 
+
 app.get('/api/v1/books/:title', (req, res, next) => {
     let title = req.params.title;
 //    console.log(title);
@@ -120,23 +121,16 @@ app.get('/api/v1/books/:title', (req, res, next) => {
     });
 });
 
-//app.get('/api/v1/remove/:title', (req, res, next) => {
-//    let title = req.params.title;
-//    Book.remove({title: title}, (err, result) => {
-//        if (err) return next(err);
-//        // return # of items deleted
-//        res.json({deleted: result.result.n});
-//    });
-//});
 
 app.get('/api/v1/remove/:title', (req, res, next) => {
-    let title = req.body.title;
+    let title = req.params.title;
     Book.remove({title: title}, (err, result) => {
         if (err) return next(err);
         // return # of items deleted
         res.json({deleted: result.result.n});
     });
 });
+
 
 app.get('/api/v1/add/:title/:author/:pubdate', (req, res, next) => {
     // find & update existing item, or add new 
@@ -147,6 +141,7 @@ app.get('/api/v1/add/:title/:author/:pubdate', (req, res, next) => {
         res.json({added: result.n});
     });
 });
+
 
 app.post('/api/v1/add/', (req, res, next) => {
     // find & update existing item, or add new 
