@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Book Store</title>
+  <title>The Book Database</title>
 
  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react-dom.js"></script>
@@ -82,26 +82,6 @@
       }
       
       // Handle item delete
-//      onDelete(title){
-        // Filter all items except the one to be removed
-//        let title = id.toLowerCase();
-//          
-//          
-//        fetch("/api/v1/remove/" + title).then((response) => {
-//            return response.json();
-//        }).then((results) => {
-//            console.log(results);
-//            
-//            const remainder = this.state.data.filter((item) => {
-//              return item.title !== title;
-//            });
-//            
-//            // Update state with new array
-//            this.setState({data: remainder});
-//            this.setState({curItem: {}});
-//        });
-//      }
-          
       onDelete(id){
         fetch("/api/v1/remove/" + id).then((response) => {
           return response.json();
@@ -139,7 +119,7 @@
         return (
         <div>
            <div>
-              <h1>Book Store</h1>
+              <h1>The Book Database</h1>
            </div>
         </div>
         );
